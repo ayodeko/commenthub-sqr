@@ -40,6 +40,7 @@ jobs:
         path: api/.qodana/code-coverage
 
     - name: Qodana Scan
+      if: always()
       uses: JetBrains/qodana-action@v2024.1
       env:
         QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}

@@ -4,7 +4,7 @@ from api import models, schemas, utils
 
 def create(db: Session, user: schemas.UserCreate):
     hashed_password = utils.hash_password(user.password)
-    db_user = models.User(**user.dict())
+    db_user = models.User(**user.model_dump())
     db_user.password = hashed_password
     db.add(db_user)
     db.commit()

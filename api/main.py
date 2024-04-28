@@ -33,7 +33,7 @@ async def register_user(
 
     background_tasks.add_task(utils.send_verification_email, new_user.email, verification_token.token)
 
-    return schemas.UserSafe.model_validate(new_user.dict())
+    return schemas.UserSafe.model_validate(new_user.model_dump())
 
 
 @app.get("/users/verify/{token}", status_code=status.HTTP_200_OK)
@@ -74,7 +74,7 @@ async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessi
 
 @app.get("/users/me", response_model=schemas.UserSafe)
 async def get_current_user(current_user: schemas.User = Depends(dependencies.get_current_user)):
-    return schemas.UserSafe.model_validate(current_user.dict())
+    return schemas.UserSafe.model_validate(current_user.model_dump())
 
 ##################################################
 # ENTITIES
