@@ -1,4 +1,4 @@
-from pydantic.v1 import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class AppSettings(BaseSettings):
@@ -15,8 +15,7 @@ class AppSettings(BaseSettings):
     SMTP_PORT: int
     SMTP_FROM_EMAIL: str
 
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
 
 
 SETTINGS = AppSettings()
