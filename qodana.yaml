@@ -26,4 +26,8 @@ profile:
 #  - id: <plugin.id> #(plugin id can be found at https://plugins.jetbrains.com)
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
+
+bootstrap: |
+  rm -rf .idea
+
 linter: jetbrains/qodana-python:latest
