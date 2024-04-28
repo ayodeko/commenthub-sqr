@@ -12,7 +12,7 @@ class AppSettings(BaseSettings):
     SMTP_LOGIN: str = ""
     SMTP_PASSWORD: str = ""
     SMTP_HOST: str = ""
-    SMTP_PORT: int = ""
+    SMTP_PORT: int = 465
     SMTP_FROM_EMAIL: str = ""
 
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
