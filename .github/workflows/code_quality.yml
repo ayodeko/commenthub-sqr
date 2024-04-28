@@ -7,18 +7,45 @@ on:
       - main
 
 jobs:
-  qodana:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      checks: write
+
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-      - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2024.1
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: 0
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1.4.2
+      with:
+        version: latest
+
+    - name: Install Dependencies
+      run: poetry install
+
+    - name: Run tests with coverage
+      run: |
+        poetry run coverage run -m pytest
+        poetry run coverage xml -o .qodana/code-coverage/coverage.xml
+      working-directory: api
+
+    - name: Archive coverage data
+      uses: actions/upload-artifact@v2
+      with:
+        name: py-coverage-data
+        path: api/.qodana/code-coverage
+
+    - name: Qodana Scan
+      uses: JetBrains/qodana-action@v2024.1
+      env:
+        QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+      with:
+        args: "-i,api,--linter,jetbrains/qodana-python:latest"
+        pr-mode: false
