@@ -27,7 +27,7 @@ profile:
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 
-bootstrap: |
+bootstrap: |+
   rm -rf .idea
   poetry install
 
