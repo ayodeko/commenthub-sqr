@@ -1,4 +1,4 @@
-name: Qodana
+name: CommentHub
 on:
   workflow_dispatch:
   pull_request:
