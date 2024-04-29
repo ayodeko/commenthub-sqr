@@ -38,7 +38,7 @@ jobs:
     - name: Run tests with coverage
       run: |
         poetry run coverage run --source api -m pytest --disable-warnings
-        poetry run coverage xml -o api/.qodana/code-coverage/coverage.xml
+        poetry run coverage xml -o .qodana/code-coverage/coverage.xml
 
     - name: Archive coverage data
       uses: actions/upload-artifact@v2

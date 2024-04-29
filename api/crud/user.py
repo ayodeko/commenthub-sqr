@@ -14,16 +14,12 @@ def create(db: Session, user: schemas.UserCreate):
 
 def get_by_id(db: Session, user_id: int) -> schemas.User | None:
     user = db.query(models.User).filter(models.User.id == user_id).first()  # type: ignore
-    if user:
-        return schemas.User.model_validate(user)
-    return None
+    return schemas.User.model_validate(user) if user else None
 
 
 def get_by_email(db: Session, email: str) -> schemas.User | None:
     user = db.query(models.User).filter(models.User.email == email).first()  # type: ignore
-    if user:
-        return schemas.User.model_validate(user)
-    return None
+    return schemas.User.model_validate(user) if user else None
 
 
 def verify(db: Session, user_id: int) -> bool:
