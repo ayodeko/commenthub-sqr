@@ -29,7 +29,7 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        poetry run coverage run --source api -m pytest
+        poetry run coverage run --source api -m pytest --disable-warnings
         poetry run coverage xml -o api/.qodana/code-coverage/coverage.xml
 
     - name: Archive coverage data
