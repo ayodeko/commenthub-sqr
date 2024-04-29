@@ -39,7 +39,7 @@ if st.session_state.clicked_search:
             st.session_state.entity_id = content_data["entities"][0]["id"]
 
             sort_order = st.selectbox("Sort comments by", ["asc", "desc"], index=0)
-            filter_last_days = st.number_input("Filter comments from the last number of days (0 for all)", min_value=0,
+            filter_last_days = st.number_input("Filter comments based on the number of days (0 by default)", min_value=0,
                                                max_value=365, value=0, step=1)
             filter_last_days = None if filter_last_days == 0 else filter_last_days
 
