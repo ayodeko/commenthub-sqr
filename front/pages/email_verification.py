@@ -13,6 +13,6 @@ if st.button("Verify"):
     response = requests.get(url=f"{API_BASE_URL}/users/verify/{verification_code}")
     if response.status_code == 200:
         st.success("Email verified, you can now log in.")
-        st.page_link("pages/welcome_page.py", label="Go to log in.", icon="🖥️")
+        st.page_link("welcome_page.py", label="Go to log in.", icon="🖥️")
     else:
         st.error("Invalid or expired verification code.")

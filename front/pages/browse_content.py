@@ -1,29 +1,25 @@
 import streamlit as st
 import requests
 
+API_BASE_URL = "http://localhost:8000"
+
 st.title("Search for content and look at the comments!")
-content_url = st.text_input("Enter URL to search content")
+content_url = st.text_input("Enter URL to look at the comments for this content.")
 if st.button("Search"):
-    response = requests.get(
-        f"{API_BASE_URL}/content/{content_url}",
-        headers={"Authorization": f"Bearer {token}"},
-    )
+    response = requests.get(f"{API_BASE_URL}/entities", params={"url": content_url})
     if response.status_code == 200:
         content_data = response.json()
-        st.write("Content Found:", content_data["content"])
-        st.write("Comments:", content_data["comments"])
+        for entity in content_data["entities"]:
+            with st.container():
+                st.write("**Name**:", entity["name"])
+                st.write("**Platform**:", entity["platform"])
+                st.write("**URL**:", f"[Link]({entity['url']})")
 
-        comment_text = st.text_area("Add your comment")
-        if st.button("Add Comment") and comment_text:
-            content_id = content_data["content"]["id"]
-            response = requests.post(
-                f"{API_BASE_URL}/comment",
-                headers={"Authorization": f"Bearer {token}"},
-                json={"content_id": content_id, "text": comment_text},
-            )
-            if response.status_code == 200:
-                st.success("Comment added successfully!")
-            else:
-                st.error("Error adding comment")
+        if len(content_data["entities"]):
+            entity_id = content_data["entities"][0]["id"]
+            comments_response = requests.get(f"{API_BASE_URL}/feedbacks/{entity_id}")
+            comments_data = comments_response.json()
+            st.write("Comments:", comments_data["feedbacks"])
     else:
-        st.error("No entity found.")
+        st.warning("No content found for this link...")
+        st.page_link("pages/create_content.py", label="If you are logged in, you can create an entity for this content", icon="✍️")
