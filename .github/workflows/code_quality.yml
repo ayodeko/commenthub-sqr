@@ -38,13 +38,13 @@ jobs:
     - name: Run tests with coverage
       run: |
         poetry run coverage run --source api -m pytest --disable-warnings
-        poetry run coverage xml -o api/.qodana/code-coverage/coverage.xml
+        poetry run coverage xml -o .qodana/code-coverage/coverage.xml
 
     - name: Archive coverage data
       uses: actions/upload-artifact@v2
       with:
         name: py-coverage-data
-        path: api/.qodana/code-coverage
+        path: .qodana/code-coverage
 
     - name: Qodana Scan
       if: always()
@@ -52,5 +52,5 @@ jobs:
       env:
         QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
       with:
-        args: "-i,api,--linter,jetbrains/qodana-python:latest"
+        args: "--linter,jetbrains/qodana-python:latest"
         pr-mode: false
