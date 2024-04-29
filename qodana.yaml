@@ -30,6 +30,6 @@ exclude:
 
 bootstrap: |+
   rm -rf .idea
-  pip install -r requirements.txt
+  poetry install
 
 linter: jetbrains/qodana-python:latest
