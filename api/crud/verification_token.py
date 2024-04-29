@@ -23,14 +23,6 @@ def get_by_token(db: Session, token: str) -> models.VerificationToken | None:
     return None
 
 
-def get_verification_token_by_user_id(db: Session, user_id: int) -> models.VerificationToken | None:
-    verification_token = (db.query(models.VerificationToken)
-                          .filter(models.VerificationToken.user_id == user_id).first())  # type: ignore
-    if verification_token:
-        return schemas.VerificationToken.model_validate(verification_token)
-    return None
-
-
 def delete_verification_token(db: Session, token: str) -> bool:
     verification_token = (db.query(models.VerificationToken)
                           .filter(models.VerificationToken.token == token).first())  # type: ignore

@@ -1,4 +1,4 @@
-name: Qodana
+name: CommentHub
 on:
   workflow_dispatch:
   pull_request:
@@ -7,18 +7,50 @@ on:
       - main
 
 jobs:
-  qodana:
+  checks:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      checks: write
+
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-      - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2024.1
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: 0
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        pip install poetry
+        poetry install --with test
+
+    - name: Run Bandit
+      run: |
+        poetry run bandit -r api
+
+    - name: Lint with flake8
+      run: |
+        poetry run flake8 api
+
+    - name: Run tests with coverage
+      run: |
+        poetry run coverage run --source api -m pytest --disable-warnings
+        poetry run coverage xml -o api/.qodana/code-coverage/coverage.xml
+
+    - name: Archive coverage data
+      uses: actions/upload-artifact@v2
+      with:
+        name: py-coverage-data
+        path: api/.qodana/code-coverage
+
+    - name: Qodana Scan
+      if: always()
+      uses: JetBrains/qodana-action@v2024.1
+      env:
+        QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+      with:
+        args: "-i,api,--linter,jetbrains/qodana-python:latest"
+        pr-mode: false

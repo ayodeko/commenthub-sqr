@@ -9,11 +9,11 @@ class AppSettings(BaseSettings):
     SECRET_KEY: str = "235to789yw3rgy789owerfh0p89q2f34"
 
     # SMTP
-    SMTP_LOGIN: str
-    SMTP_PASSWORD: str
-    SMTP_HOST: str
-    SMTP_PORT: int
-    SMTP_FROM_EMAIL: str
+    SMTP_LOGIN: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 465
+    SMTP_FROM_EMAIL: str = ""
 
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
 

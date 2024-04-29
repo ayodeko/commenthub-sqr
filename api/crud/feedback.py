@@ -5,7 +5,7 @@ from api import models, schemas
 
 
 def create(db: Session, feedback: schemas.FeedbackCreate):
-    db_feedback = models.Feedback(**feedback.dict())
+    db_feedback = models.Feedback(**feedback.model_dump())
     db.add(db_feedback)
     db.commit()
     db.refresh(db_feedback)

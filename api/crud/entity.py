@@ -3,7 +3,7 @@ from api import models, schemas
 
 
 def create(db: Session, entity: schemas.EntityCreate):
-    db_entity = models.Entity(**entity.dict())
+    db_entity = models.Entity(**entity.model_dump())
     db.add(db_entity)
     db.commit()
     db.refresh(db_entity)

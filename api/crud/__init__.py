@@ -1,1 +1,1 @@
-from . import user, verification_token, entity, feedback
+from . import user, verification_token, entity, feedback  # noqa: F401
