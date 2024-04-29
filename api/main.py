@@ -254,7 +254,8 @@ async def get_feedbacks(
     - filter_last_days (int): The number of days to filter feedbacks by. Defaults to None.
 
     Returns:
-    - schemas.FeedbackWithUsernameList: A list of feedbacks for the specified entity, along with the username of the user who provided the feedback.
+    - schemas.FeedbackWithUsernameList: A list of feedbacks for the specified entity, along with the username of
+                                        the user who provided the feedback.
 
     Raises:
     - HTTPException: If the entity with the given ID does not exist.
