@@ -29,5 +29,6 @@ profile:
 
 bootstrap: |
   rm -rf .idea
+  poetry install
 
 linter: jetbrains/qodana-python:latest
