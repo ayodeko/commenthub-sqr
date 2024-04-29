@@ -16,7 +16,7 @@ def create_tables():
     database.Base.metadata.create_all(bind=database.engine)
 
 
-@app.get("/healthcheck")
+@app.head("/healthcheck")
 async def healthcheck():
     """
     Check if the server is up and running.
@@ -249,7 +249,7 @@ async def add_feedback(
     return new_feedback
 
 
-@app.get("/feedbacks/{entity_id}", dependencies=[Depends(dependencies.get_current_user)])
+@app.get("/feedbacks/{entity_id}")
 async def get_feedbacks(
     entity_id: int,
     sort_order: str = "asc",
