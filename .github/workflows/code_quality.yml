@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  build:
+  checks:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +26,14 @@ jobs:
       run: |
         pip install poetry
         poetry install --with test
+
+    - name: Run Bandit
+      run: |
+        poetry run bandit -r app
+
+    - name: Lint with flake8
+      run: |
+        poetry run flake8 api
 
     - name: Run tests with coverage
       run: |
