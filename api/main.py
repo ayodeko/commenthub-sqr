@@ -16,6 +16,17 @@ def create_tables():
     database.Base.metadata.create_all(bind=database.engine)
 
 
+@app.get("/healthcheck")
+async def healthcheck():
+    """
+    Check if the server is up and running.
+
+    Returns:
+    - dict: A dictionary containing the status of the server.
+    """
+    return {"status": "ok"}
+
+
 ##################################################
 # USERS
 ##################################################
