@@ -144,7 +144,7 @@ async def add_feedback(
     return new_feedback
 
 
-@app.get("/feedbacks/entity/{entity_id}", dependencies=[Depends(dependencies.get_current_user)])
+@app.get("/feedbacks/{entity_id}", dependencies=[Depends(dependencies.get_current_user)])
 async def get_feedbacks(
     entity_id: int,
     sort_order: str = "asc",
