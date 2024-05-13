@@ -7,6 +7,7 @@ on:
       - main
 
 jobs:
+
   checks:
     runs-on: ubuntu-latest
 
@@ -53,4 +54,22 @@ jobs:
         QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
       with:
         args: "--linter,jetbrains/qodana-python:latest"
-        pr-mode: false
+        pr-mode: false .
+  Backend-Tests:
+    name: Run unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: "1.7.1"
+      - name: Install dependencies 
+        working-directory: ./app
+        run: poetry install
+      - name: Run test coverage
+        working-directory: .
+        run: poetry run pytest --cov=app --cov-branch --cov-report term-missing --cov-fail-under=65 __tests__/
