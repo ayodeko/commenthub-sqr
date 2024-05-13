@@ -73,3 +73,56 @@ jobs:
       - name: Run test coverage
         working-directory: .
         run: poetry run pytest --cov=api --cov-branch --cov-report term-missing --cov-fail-under=65 tests/
+  Bandit:
+    name: Bandit Security Scan
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.11.0]
+        poetry-version: [1.7.0]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - name: Install dependencies
+        working-directory: ./api
+        run: poetry install
+      - name: Run bandit
+        working-directory: .
+        run: poetry run bandit -r ./api
+  Snyk:
+    name: Snyk Vulnerability Scan
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.11.0]
+        poetry-version: [1.7.0]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - name: Install dependencies
+        working-directory: .
+        run: poetry install
+      - name: Snyk setup
+        uses: snyk/actions/setup@master
+      - name: Snyk check
+        working-directory: .
+        run: snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
