@@ -68,8 +68,8 @@ jobs:
         with:
           poetry-version: "1.7.1"
       - name: Install dependencies 
-        working-directory: ./app
+        working-directory: ./api
         run: poetry install
       - name: Run test coverage
         working-directory: .
-        run: poetry run pytest --cov=app --cov-branch --cov-report term-missing --cov-fail-under=65 __tests__/
+        run: poetry run pytest --cov=app --cov-branch --cov-report term-missing --cov-fail-under=65 tests/
