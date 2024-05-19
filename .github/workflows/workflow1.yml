@@ -34,7 +34,7 @@ jobs:
 
     - name: Lint with flake8
       run: |
-        poetry run flake8 api
+        poetry run flake8 --verbose api
 
     - name: Run tests with coverage
       run: |
